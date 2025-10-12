@@ -15,6 +15,20 @@ export class Service{
         this.bucket = new Storage(this.client);
     }
 
+    // async getFilePreview(fileId) {
+    //     if (!fileId) return null;
+        
+    //     try {
+    //         return this.bucket.getFileView(
+    //             conf.appwriteBucketId,
+    //             fileId
+    //         );
+    //     } catch (error) {
+    //         console.error("Appwrite service :: getFilePreview :: error", error);
+    //         return null;
+    //     }
+    // }
+
     async createPost({title, slug, content, featuredImage, status, userId}){
         try {
             return await this.databases.createDocument(
@@ -121,10 +135,16 @@ export class Service{
     }
 
     getFileView(fileId){
-        return this.bucket.getFileView(
-            conf.appwriteBucketId,
-            fileId,
-        )
+        try {
+            if (!fileId) return null;
+            return this.bucket.getFileView(
+                conf.appwriteBucketId,
+                fileId
+            );
+        } catch (error) {
+            console.log("Appwrite service :: getFileView :: error", error);
+            return null;
+        }
     }
 }
 
