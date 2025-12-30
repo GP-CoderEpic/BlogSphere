@@ -4,7 +4,7 @@ import appwriteService from "../../appwrite/config";
 import { Button, Container, HandLoaderCSS } from "../index";
 import parse from "html-react-parser";
 import { useSelector } from "react-redux";
-import CommentSection from '../commentSection';
+import CommentSection from '../CommentSection';
 
 export default function Post() {
     const [post, setPost] = useState(null);
