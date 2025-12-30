@@ -93,12 +93,23 @@
 
 ---
 
-### **Step 5: Update Appwrite CORS Settings**
+### **Step 5: Update Appwrite Settings**
+
+**Important:** You don't need Custom Domains for Render URLs. Instead, add your frontend URL as a Web Platform.
 
 1. Go to your Appwrite dashboard
-2. Go to **Settings** → **Domains**
-3. Add your frontend URL: `https://blog-frontend.onrender.com`
-4. Save changes
+2. Select your **Project** (from the left sidebar)
+3. Go to **Settings** → Look for **"Platforms"** or **"Web Platforms"** section
+4. Click **"Add Platform"** or **"Create Platform"** → Select **"Web"**
+5. Enter your frontend URL: `https://blog-frontend-6mzh.onrender.com` (with https://)
+6. Save changes
+
+**Alternative Path:**
+- If you see **"Platforms"** in the left sidebar, click it → **"Add Platform"** → **"Web"**
+- Enter: `https://blog-frontend-6mzh.onrender.com`
+- Save
+
+**Note:** Custom Domains is only for your own custom domain (like example.com), not for Render's free subdomain. For Render URLs, use Platforms/Web Platforms instead.
 
 ---
 

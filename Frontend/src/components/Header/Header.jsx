@@ -12,15 +12,17 @@ function Header() {
   const navigate = useNavigate()
   const location = useLocation()
   const [dropdownOpen, setDropdownOpen] = useState(false)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const dropdownRef = useRef(null)
 
   // useEffect(() => {
   //   console.log("Header rendered, userData:", userData)
   // }, [userData])
 
-  // Reset dropdown state when auth status changes
+  // Reset dropdown and mobile menu state when auth status changes
   useEffect(() => {
     setDropdownOpen(false)
+    setMobileMenuOpen(false)
   }, [authStatus, userData])
 
   // Close dropdown when clicking outside
@@ -52,18 +54,27 @@ function Header() {
       dispatch(logout())
       navigate('/')
     })
+    setMobileMenuOpen(false)
+  }
+
+  const handleNavigation = (slug) => {
+    navigate(slug)
+    setMobileMenuOpen(false)
   }
 
   return (
-    <header className="pt-3 pb-2 px-0.8 shadow-lg shadow-blue-100/60">
-      <Container className = "rounded-xl">
-        <nav className="flex items-center">
-          <div className="mr-4">
+    <header className="pt-3 pb-2 px-2 md:px-4 shadow-lg shadow-blue-100/60">
+      <Container className="rounded-xl">
+        <nav className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex-shrink-0">
             <Link to="/">
               <Logo width="50px" />
             </Link>
           </div>
-          <ul className="flex ml-auto items-center gap-2">
+
+          {/* Desktop Navigation */}
+          <ul className="hidden md:flex ml-auto items-center gap-2">
             {navItems.map((item) =>
               item.active ? (
                 <li key={item.name}>
@@ -86,16 +97,16 @@ function Header() {
                 <button
                   key={userData?.name}
                   onClick={() => setDropdownOpen(!dropdownOpen)}
-                  className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold"
+                  className="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold hover:bg-blue-700 transition-colors"
                 >
                   {userData.name?.charAt(0).toUpperCase() || 'U'}
                 </button>
 
                 {dropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-md z-10">
+                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg z-50">
                     <div className="p-3 border-b">
-                      <div className="font-semibold">{userData.name}</div>
-                      <div className="text-sm text-gray-600">{userData.email}</div>
+                      <div className="font-semibold truncate">{userData.name}</div>
+                      <div className="text-sm text-gray-600 truncate">{userData.email}</div>
                     </div>
                     <button
                       onClick={() => {
@@ -117,7 +128,99 @@ function Header() {
               </li>
             )}
           </ul>
+
+          {/* Mobile Hamburger Menu Button */}
+          <div className="flex md:hidden items-center gap-3">
+            {/* User Avatar for Mobile */}
+            {authStatus && userData && (
+              <button
+                onClick={() => setDropdownOpen(!dropdownOpen)}
+                className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold hover:bg-blue-700 transition-colors relative"
+                ref={dropdownRef}
+              >
+                {userData.name?.charAt(0).toUpperCase() || 'U'}
+                
+                {dropdownOpen && (
+                  <div className="absolute right-0 top-12 w-48 bg-white border rounded-md shadow-lg z-50">
+                    <div className="p-3 border-b">
+                      <div className="font-semibold truncate">{userData.name}</div>
+                      <div className="text-sm text-gray-600 truncate">{userData.email}</div>
+                    </div>
+                    <button
+                      onClick={() => {
+                        navigate('/dashboard')
+                        setDropdownOpen(false)
+                      }}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      Dashboard
+                    </button>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </button>
+            )}
+
+            {/* Hamburger Icon */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-lg hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+              aria-label="Toggle menu"
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                {mobileMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </nav>
+
+        {/* Mobile Menu Dropdown */}
+        {mobileMenuOpen && (
+          <div className="md:hidden mt-3 pb-3 border-t pt-3">
+            <ul className="flex flex-col gap-2">
+              {navItems.map((item) =>
+                item.active ? (
+                  <li key={item.name}>
+                    <button
+                      onClick={() => handleNavigation(item.slug)}
+                      className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
+                        location.pathname === item.slug
+                          ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md'
+                          : 'hover:bg-gray-100 active:bg-gray-200'
+                      }`}
+                    >
+                      {item.name}
+                    </button>
+                  </li>
+                ) : null
+              )}
+            </ul>
+          </div>
+        )}
       </Container>
     </header>
   )
