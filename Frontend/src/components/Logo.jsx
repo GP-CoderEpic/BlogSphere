@@ -1,5 +1,5 @@
 import React from 'react'
-import img from '../assets/Blogging-logo.png'
+import img from '../assets/Blogging-Logo.png'
 
 function Logo({width = '30px'}) {
   return <img src={img} alt="Logo" style={{width, borderRadius: '50px'}} />;
