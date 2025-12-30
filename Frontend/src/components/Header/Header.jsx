@@ -133,37 +133,38 @@ function Header() {
           <div className="flex md:hidden items-center gap-3">
             {/* User Avatar for Mobile */}
             {authStatus && userData && (
-              <button
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-                className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold hover:bg-blue-700 transition-colors relative"
-                ref={dropdownRef}
-              >
-                {userData.name?.charAt(0).toUpperCase() || 'U'}
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                  className="w-9 h-9 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold hover:bg-blue-700 transition-colors"
+                >
+                  {userData.name?.charAt(0).toUpperCase() || 'U'}
+                </button>
                 
                 {dropdownOpen && (
-                  <div className="absolute right-0 top-12 w-48 bg-white border rounded-md shadow-lg z-50">
-                    <div className="p-3 border-b">
-                      <div className="font-semibold truncate">{userData.name}</div>
-                      <div className="text-sm text-gray-600 truncate">{userData.email}</div>
+                  <div className="absolute right-0 top-full mt-2 w-56 bg-white border rounded-lg shadow-xl z-[100]">
+                    <div className="p-3 border-b bg-gray-50 rounded-t-lg">
+                      <div className="font-semibold text-gray-900 truncate text-sm">{userData.name}</div>
+                      <div className="text-xs text-gray-600 truncate">{userData.email}</div>
                     </div>
                     <button
                       onClick={() => {
                         navigate('/dashboard')
                         setDropdownOpen(false)
                       }}
-                      className="block w-full text-left px-4 py-2 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-3 hover:bg-blue-50 transition-colors text-gray-700 font-medium text-sm"
                     >
-                      Dashboard
+                      📊 Dashboard
                     </button>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                      className="block w-full text-left px-4 py-3 text-red-600 hover:bg-red-50 font-medium border-t text-sm rounded-b-lg transition-colors"
                     >
-                      Logout
+                      🚪 Logout
                     </button>
                   </div>
                 )}
-              </button>
+              </div>
             )}
 
             {/* Hamburger Icon */}
