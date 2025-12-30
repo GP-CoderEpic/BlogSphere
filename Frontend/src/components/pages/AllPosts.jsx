@@ -12,7 +12,7 @@ function AllPosts() {
     useEffect(() => {
         setIsLoading(true)
         if (authStatus) {
-            appwriteService.getPosts([]).then((posts) => {
+            appwriteService.getPosts().then((posts) => {
                 if (posts) {
                     setPosts(posts.documents)
                 }

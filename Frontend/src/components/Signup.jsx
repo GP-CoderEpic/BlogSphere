@@ -19,12 +19,19 @@ function Signup() {
         setError("")
         setIsLoading(true)
         try {
-            const userData = await authService.createAccount(data);
-            if(userData){
-                const userData = await authService.getCurrentUser();
-                if(userData){
-                    dispatch(login(userData))
-                    navigate("/");
+            const session = await authService.createAccount(data);
+            if(session){
+                // Wait a bit for session to be established
+                await new Promise(resolve => setTimeout(resolve, 300));
+                const currentUser = await authService.getCurrentUser();
+                if(currentUser){
+                    dispatch(login({userData: currentUser}))
+                    // Small delay to ensure Redux state is updated before navigation
+                    setTimeout(() => {
+                        navigate("/");
+                    }, 100);
+                } else {
+                    setError("Failed to get user data. Please try logging in.");
                 }
             }
         } catch (error) {
