@@ -43,8 +43,11 @@ function CommentSection({ postId }) {
     };
 
     return (
-        <div className="mt-8">
-            <h3 className="text-xl font-bold mb-4">
+        <div className="mt-2 md:mt-4">
+            <h3 className="text-lg sm:text-xl font-bold mb-3 md:mb-4 flex items-center gap-2">
+                <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                </svg>
                 Comments ({comments.length})
             </h3>
 
@@ -53,9 +56,13 @@ function CommentSection({ postId }) {
             )}
 
             {loading ? (
-                <div> Loading comments...</div>
+                <div className="text-center py-4 text-gray-600">Loading comments...</div>
+            ) : comments.length === 0 ? (
+                <div className="text-center py-8 text-gray-500">
+                    <p>No comments yet. Be the first to comment!</p>
+                </div>
             ) : (
-                <div className="space-y-4">
+                <div className="space-y-3 md:space-y-4">
                     {comments.map(comment => (
                         <CommentItem key={comment.$id} comment={comment} onDelete={handleDeleteComment} onUpdate={handleUpdateComment} />
                     ))}

@@ -21,24 +21,24 @@ function CommentItem({ comment, onDelete, onUpdate }) {
     };
 
     return (
-       <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="flex items-center mb-2">
+       <div className="bg-gray-50 p-3 sm:p-4 rounded-lg shadow-sm">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-0 mb-2">
                 <div className="flex items-center space-x-2 flex-1">
-                    <div className="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-semibold">
+                    <div className="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs sm:text-sm font-semibold flex-shrink-0">
                         {comment.userName.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-medium">{comment.userName}</span>
+                    <span className="font-medium text-sm sm:text-base truncate">{comment.userName}</span>
                 </div>
                 
-                <div className="flex items-center space-x-2 pr-0.2">
-                    <span className="text-sm text-gray-500">
+                <div className="flex items-center justify-between sm:justify-end space-x-2 pl-9 sm:pl-0">
+                    <span className="text-xs sm:text-sm text-gray-500">
                         {formatDate(comment.createdAt)}
                     </span>
                     
                     {isOwner && (
-                        <div className="flex items-center space-x-1 ml-2">
+                        <div className="flex items-center space-x-1">
                             <button onClick={() => setIsEditing(!isEditing)}
-                                className="text-blue-500 hover:text-blue-700 pr-2"
+                                className="text-blue-500 hover:text-blue-700 p-1.5"
                                 title="Edit comment"
                             >
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -46,7 +46,7 @@ function CommentItem({ comment, onDelete, onUpdate }) {
                                 </svg>
                             </button>
                             <button onClick={() => onDelete(comment.$id)}
-                                className="text-red-500 hover:text-red-700"
+                                className="text-red-500 hover:text-red-700 p-1.5"
                                 title="Delete comment"
                             >
                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -58,18 +58,18 @@ function CommentItem({ comment, onDelete, onUpdate }) {
                 </div>
             </div>
             {isEditing ? (
-                <div className ="ml-10">
+                <div className="ml-0 sm:ml-10">
                     <textarea
                         value={editContent}
                         onChange={(e) => setEditContent(e.target.value)}
-                        className="w-full p-2 border border-gray-300 rounded-md resize-none"
+                        className="w-full p-2 sm:p-3 border border-gray-300 rounded-md resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm sm:text-base"
                         rows="3"
                         maxLength={500}
                     />
                     <div className="flex justify-end space-x-2 mt-2">
                         <button
                             onClick={handleCancelEdit}
-                            className="px-3 py-1 text-gray-600 hover:text-gray-800"
+                            className="px-3 py-1.5 text-sm sm:text-base text-gray-600 hover:text-gray-800 rounded hover:bg-gray-100"
                         >
                             Cancel
                         </button>
@@ -78,14 +78,16 @@ function CommentItem({ comment, onDelete, onUpdate }) {
                                 onUpdate({commentId: comment.$id, content: editContent});
                                 setIsEditing(false);
                             }}
-                            className="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            className="px-3 py-1.5 text-sm sm:text-base bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50"
                             disabled={!editContent.trim()}
                         >
                             Save
                         </button>
                     </div>
                 </div>
-            ) : (<p className="text-gray-700 ml-10">{comment.content}</p>)}
+            ) : (
+                <p className="text-gray-700 text-sm sm:text-base ml-0 sm:ml-10 break-words whitespace-pre-wrap">{comment.content}</p>
+            )}
             
         </div>
     );
